@@ -4,6 +4,18 @@ To install use:
 
 > git clone --recurse-submodules git@github.com:cflb/boilerplate-ddp.git
 
+Build containers:
+
+> docker-compose build
+
+Up containers:
+
+> docker-compose up
+
+Open browser:
+
+> localhost
+
 ## Django Project Boileplate
 
 1. Rename your project with:
