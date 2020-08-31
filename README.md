@@ -1,5 +1,7 @@
 # Boilerplat - ddp (Docker - Django - Postgres)
 
+Basic requirements (docker and docker-compose)
+
 To install use:
 
 > git clone --recurse-submodules git@github.com:cflb/boilerplate-ddp.git
