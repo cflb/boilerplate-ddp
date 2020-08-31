@@ -9,7 +9,7 @@ services:
       - 8000:8000
     volumes:
       - "./src:/src"
-    enviroment:
+    environment:
       DEBUG: "true"
     command: gunicorn ropd.wsgi:application -w 2 -b :8000
 
