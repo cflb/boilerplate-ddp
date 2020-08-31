@@ -11,15 +11,15 @@ services:
       - "./src:/src"
     environment:
       DEBUG: "true"
-    command: gunicorn ropd.wsgi:application -w 2 -b :8000
+    command: gunicorn demo.wsgi:application -w 2 -b :8000
 
-  statiffiles:
+  staticfiles:
     restart: always
     build: ./nginx/
     ports:
       - "80:80"
     volumes:
-      - "./src/staticfiles:/www/static"
+      - "./src/static_files:/www/static"
     links:
       - webapp:webapp
 
@@ -31,7 +31,7 @@ services:
     volumes:
       - master_vol:/var/lib/postgresql
     ports:
-      - "5434:5434"
+      - "5433:5434"
     environment:
       - DEBUG=false
       - DB_USER=postgres_user
