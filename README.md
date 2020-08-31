@@ -7,7 +7,7 @@ To install use:
 ## Django Project Boileplate
 
 1. Rename your project with:
-   > python manage.py rename <yourprojectname> <newprojectname>
+   > python manage.py rename yourprojectname newprojectname
 
 ### This project includes:
 
