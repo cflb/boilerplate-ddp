@@ -6,7 +6,7 @@ LABEL maintainer="Your Django Project"
 ENV PYTHONUNBUFFERED 1
 ENV PIP_DEFAULT_TIMEOUT 100 
 
-COPY ./requirements.txt /requirements.txt
+COPY ./src/requirements.txt /requirements.txt
 
 RUN pip install --upgrade pip
 
@@ -17,7 +17,6 @@ COPY ./src /src
 RUN pip install -r requirements.txt
 CMD python manage.py makemigrations
 CMD python manage.py migrate
-#CMD python manage.py loaddata jsonfiles_data/db.json
 
 #RUN adduser -D user
 #USER user
