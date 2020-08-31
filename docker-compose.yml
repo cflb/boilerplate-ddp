@@ -1,0 +1,81 @@
+version: "2"
+
+services:
+  webapp:
+    restart: always
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - "./src:/src"
+    enviroment:
+      DEBUG: "true"
+    command: gunicorn ropd.wsgi:application -w 2 -b :8000
+
+  statiffiles:
+    restart: always
+    build: ./nginx/
+    ports:
+      - "80:80"
+    volumes:
+      - "./src/staticfiles:/www/static"
+    links:
+      - webapp:webapp
+
+  ### PostgreSQL Container (Master) ####################################
+
+  master:
+    restart: always
+    build: ./master
+    volumes:
+      - master_vol:/var/lib/postgresql
+    ports:
+      - "5434:5434"
+    environment:
+      - DEBUG=false
+      - DB_USER=postgres_user
+      - DB_PASS=postgres_password
+      - DB_NAME=postgres_dbname
+      - DB_UNACCENT=false
+      - REPLICATION_MODE=master
+      - REPLICATION_USER=replicator
+      - REPLICATION_PASS=replpassword
+      - REPLICATION_SSLMODE=
+
+  ### PostgreSQL Container (Slave) ####################################
+
+  slave:
+    restart: always
+    build: ./slave
+    volumes:
+      - slave_vol:/var/lib/postgresql
+    ports:
+      - "5432"
+    links:
+      - master:master
+    environment:
+      - DEBUG=false
+      - REPLICATION_MODE=slave
+      - REPLICATION_HOST=master
+      - REPLICATION_USER=replicator
+      - REPLICATION_PASS=replpassword
+
+  ### pgAdmin Container (Master) #######################################
+
+  pgadmin:
+    build: ./pgadmin
+    ports:
+      - "5051:5051"
+    links:
+      - master
+
+### Volumes Setup ###########################################
+
+volumes:
+  master_vol:
+    driver: "local"
+  slave_vol:
+    driver: "local"
+  sessions: ## nothing is connected to this (- ./data/sessions:/sessions)
+    driver: "local"
